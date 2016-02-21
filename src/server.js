@@ -5,10 +5,6 @@ require('dotenv').config({
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-
-
-mongoose.connect(process.env.MONGODB);
 
 
 var app = express();
@@ -41,6 +37,13 @@ app.post('/tap/single', tapController.single);
 app.post('/tap/double', tapController.double);
 app.post('/tap/hold', tapController.hold);
 app.post('/tap/any', tapController.any);
+
+// remote
+var remoteController = require('./controllers/remote');;
+app.get('/remote/single', remoteController.single);
+app.get('/remote/double', remoteController.double);
+app.get('/remote/hold', remoteController.hold);
+app.get('/remote/any', remoteController.any);
 
 app.get('*', function(req, res) {
   res.sendStatus(404);
