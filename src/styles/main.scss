@@ -5,6 +5,7 @@
 // sass partials here
 @import 'variables';
 @import 'fonts';
+@import 'animate';
 
 
 body {
@@ -15,6 +16,7 @@ body {
 
 .portfolio-item {
     margin-bottom: 25px;
+    min-height: 260px;
 }
 
 footer {
