@@ -8,8 +8,9 @@
 
 
 body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-    background:url("/assets/img/bg.png");
+    background:url("/assets/img/ignasi_pattern_s.png");
+    padding-bottom: 20px;
+    background-attachment: fixed;
 }
 
 .portfolio-item {
@@ -17,10 +18,148 @@ body {
 }
 
 footer {
-    margin: 50px 0;
+    margin: 20px 0 0;
+
+  p {
+    text-align: center;
+    margin: 0;
+    span {
+      font-size: 20px;
+      color: #E74C3C;
+    }
+  }
 }
 
 .img-responsive {
 	max-width: 270px;
 	height: 150px;
+}
+
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+html, body {
+  font-size: 16px;
+  font-family: "open-sans", Arial, sans-serif;
+}
+
+.container1 {
+  position: relative;
+  width: 100%;
+  max-width: 45em;
+  margin: 0 auto;
+  @include clearfix;
+  text-align: center;
+
+}
+#main {
+  height: 90vh;
+}
+
+.logo {
+  display: inline-block;
+  position: relative;
+  width: 20em;
+  height: 20em;
+  margin: 0 auto;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 2px 4px 0 #666;
+    border-radius: 1000px;
+
+    opacity: 0.3;
+    &#clear {
+      opacity: 1;
+    }
+  }
+}
+
+.title {
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #333;
+  font-size: 3em;
+}
+
+.description {
+  font-family: "open-sans", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  width: 100%;
+  margin: 30px auto 0;
+  text-align: center;
+}
+
+.centerthing {
+  position: relative;
+  top: 50vh;
+  transform: translateY(-50%);
+}
+
+.button {
+  letter-spacing: 4px;
+  display: block;
+  margin: -10px auto 0;
+  text-decoration: none;
+  font-family: "open-sans", Arial, sans-serif;
+  background-color: #333;
+  border: none;
+  font-size: 16px;
+  padding: 0.5em 0.7em;
+  margin-top: 1em;
+  color: white;
+  transition: all 0.25s ease;
+  &:hover {
+    background-color: #666;
+    cursor: pointer;
+  }
+}
+
+.container {
+  background-color: white;
+  box-shadow: 0 2px 4px 0 #666;
+  padding: 20px;
+}
+
+.page-header {
+  margin-top: 0;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0;
+  display: block;
+  border: none;
+}
+.page-subheader {
+  font-weight: 400;
+  color: #666;
+  margin-top: 0;
+  display: block;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #666;
+  margin-bottom: 20px;
+}
+
+hr {
+  border-top: 1px solid #666;
+}
+
+.portfolio-item {
+  img {
+    box-shadow: 0 2px 4px 0 #666;
+  }
+  .app {
+    color: #333;
+    font-weight: 700;
+  }
 }
