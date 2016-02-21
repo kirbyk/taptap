@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+
+  "name": "TapTap",
+  "description": "With the tap of a button.",
+  "version": "1.0",
+
+  "icons": { "16" : "images/icon.png",
+      "48" : "images/48.png",
+      "128" : "images/128.png"},
+
+  "browser_action": {
+      "homepage_url": "taptap.tech",
+      "default_title": "TapTap",
+      "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_end",
+      "css": ["style.css"],
+      "js": ["tools/jquery.js", "tools/firebase.js", "tools/domainatrix.js", "main.js"]
+    }
+  ],
+
+  "permissions": [
+     "activeTab",
+     "storage",
+     "webNavigation"
+  ]
+}
