@@ -1,10 +1,10 @@
-console.log("Taptap main.js loaded.");
+console.log('Taptap main.js loaded.');
 
 Firebase.INTERNAL.forceWebSockets();
 
 var rootFirebaseRef = new Firebase('https://taptap-app.firebaseio.com');
 var deviceId = getDeviceId(); // might be broken because of order
-var currentPlugin = null;
+var currentApp = null;
 
 var storeDeviceId = function(deviceId) {
   localStorage.setItem('taptap-deviceId', deviceId);
@@ -19,42 +19,33 @@ var getCurrentSite = function() {
   return a.domain + '.' + a.publicSuffix;
 };
 
-var execFireAction = function(cssPath, action){
-  if (action === 'click'){
-    $(cssPath).click();
-  } else if (action === 'raw_js'){
-    window.eval(cssPath);
-  }
+var execClick = function(cssPath) {
+  $(cssPath).click();
 }
 
 var onCorrectSite = function(target) {
-  if (target == '*') {
-    return true;
-  } else if(target == getCurrentSite()) {
-    return true;
-  } else {
-    return false;
-  }
+  return target === '*' || target === getCurrentSite();
 }
 
 var commandListener = function() {
-  console.log('Current plugin: ' + currentPlugin);
+  console.log('Current app: ' + currentApp);
 
   var first = true;
 
-  rootFirebaseRef.child('plugins').child(currentPlugin).child('commands').limitToLast(1).on("child_added", function(snapshot) { // TODO: change this to correct endpoint
+  rootFirebaseRef.child('test-users/' + deviceId + '/taps').limitToLast(1).on('child_added', function(snapshot) { // TODO: change this to correct endpoint
     if (!first) {
       var lastCommand = snapshot.val();
 
-      rootFirebaseRef.child('plugins').child(currentPlugin).child('map').once('value', function(snapshot2) {
-        var map = snapshot2.val();
-        var site = map['site'];
-        var cssPath = map['buttons'][lastCommand]['cssPath'];
-        var action = map['buttons'][lastCommand]['action'];
+      rootFirebaseRef.child('test-apps/' + currentApp).once('value', function(fireAppData) {
+        console.log('tap');
+
+        var appData = fireAppData.val();
+        var site = appData['site'];
+        var cssPath = appData['cssPath'];
 
         if (onCorrectSite(site)) {
-          console.log('Executing action: ' + action + ', path: ' + cssPath);
-          execFireAction(cssPath, action);
+          console.log('Executing click on: ' + cssPath);
+          execClick(cssPath);
         }
       });
     } else {
@@ -63,14 +54,19 @@ var commandListener = function() {
   });
 };
 
-var getCurrentPlugin = function() {
-  rootFirebaseRef.child('plugin-map').once('value', function(snapshot) { // TODO: change this to correct endpoint
-    var plugins = snapshot.val();
-    var keys = Object.keys(plugins);
+var getCurrentApp = function() {
+  rootFirebaseRef.child('test-users/' + deviceId + '/taps').limitToLast(1).on('child_added', function(snapshot) {
+  };
+
+  rootFirebaseRef.child('test-app-map').once('value', function(snapshot) { // TODO: change this to correct endpoint
+    console.log('app got');
+
+    var apps = snapshot.val();
+    var keys = Object.keys(apps);
 
     for (var i = 0; i < keys.length; i++) {
-      if (plugins[keys[i]] === getCurrentSite()) {
-        currentPlugin = keys[i];
+      if (apps[keys[i]] === getCurrentSite()) {
+        currentApp = keys[i];
         commandListener();
         break;
       }
@@ -79,12 +75,12 @@ var getCurrentPlugin = function() {
 };
 
 var loadContentScript = function() {
-  getCurrentPlugin();
+  getCurrentApp();
 };
 
 // wait until we hear from the popup with the deviceId.
 (function wait() {
-  if(deviceId != null){
+  if (deviceId != null) {
     loadContentScript();
   } else {
     setTimeout(wait, 500);

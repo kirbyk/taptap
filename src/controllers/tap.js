@@ -2,45 +2,55 @@ var firebase = require('firebase');
 var Constants = require('../constants');
 
 
-var tapsRef = Constants.rootFirebaseRef.child('taps');
+var tapsRef = Constants.rootFirebaseRef;
+var currentApp = null;
 
 
 exports.single = function(req, res) {
   console.log('Watching for single...');
 
-  // TODO parse userid & potentially find cooresponding firebase key
-
-  _sendFireRequest(req, res, 'single');
+  _sendFireRequest(req, res, {
+    type: 'single',
+    user: 'test-user',
+    app: currentApp
+  });
 };
 
 exports.double = function(req, res) {
   console.log('Watching for double...');
 
-  // TODO parse userid & potentially find cooresponding firebase key
-
-  _sendFireRequest(req, res, 'double');
+  _sendFireRequest(req, res, {
+    type: 'double',
+    user: 'test-user',
+    app: currentApp
+  });
 };
 
 exports.hold = function(req, res) {
   console.log('Watching for hold...');
 
-  // TODO parse userid & potentially find cooresponding firebase key
-
-  _sendFireRequest(req, res, 'hold');
+  _sendFireRequest(req, res, {
+    type: 'hold',
+    user: 'test-user',
+    app: currentApp
+  });
 };
 
 exports.any = function(req, res) {
   console.log('Watching for any...');
 
-  // TODO parse userid & potentially find cooresponding firebase key
-
-  _sendFireRequest(req, res, 'any');
+  _sendFireRequest(req, res, {
+    type: 'any',
+    user: 'test-user',
+    app: currentApp
+  });
 };
 
-function _sendFireRequest(req, res, type) {
+function _sendFireRequest(req, res, payload) {
   _fireRequest({
-    type: type,
-    user: 'test user'
+    type: payload.type,
+    user: payload.user,
+    app: payload.app
   }, function(err) {
     if (err) {
       res.sendStatus(500);
@@ -50,10 +60,18 @@ function _sendFireRequest(req, res, type) {
   });
 }
 
+
 function _fireRequest(payload, callback) {
   console.log('Firing ' + payload.type);
 
-  tapsRef.child(payload.type).push({
-    user: payload.user
+  // var path = 'test-users/' + payload.user + '/taps/' + payload.type;
+  var path = 'test-users/' + 'test-user' + '/taps/' + payload.type;
+  
+  tapsRef.child(path).push({
+
   }, callback);
 }
+
+tapsRef.child('test-users/test-user/currentApp').on('value', function(fireCurrentApp) { // TODO: change this to correct endpoint
+  currentApp = fireCurrentApp.val();
+});
