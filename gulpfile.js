@@ -30,6 +30,12 @@ gulp.task('views', function() {
     .pipe(gulp.dest('dist/views'));
 });
 
+gulp.task('constants', function() {
+  return gulp
+    .src('./src/constants/**/*')
+    .pipe(gulp.dest('dist/constants'));
+});
+
 gulp.task('controllers', function() {
   return gulp
     .src('./src/controllers/**/*')
@@ -75,4 +81,4 @@ gulp.task('sass:watch', function() {
 });
 
 gulp.task('default', ['copy', 'assets', 'views', 'models', 'controllers',
-                      'scripts', 'sass']);
+                      'scripts', 'sass', 'constants']);

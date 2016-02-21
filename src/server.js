@@ -37,10 +37,10 @@ var tapController = require('./controllers/tap');
 
 app.get('/', homeController.getRoot);
 
-app.get('/tap/single', tapController.singleTap);
-app.get('/tap/double', tapController.doubleTap);
-app.get('/tap/hold', tapController.hold);
-app.get('/tap/any', tapController.any);
+app.post('/tap/single', tapController.single);
+app.post('/tap/double', tapController.double);
+app.post('/tap/hold', tapController.hold);
+app.post('/tap/any', tapController.any);
 
 app.get('*', function(req, res) {
   res.sendStatus(404);
