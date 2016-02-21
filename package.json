@@ -1,0 +1,37 @@
+{
+  "name": "taptap",
+  "version": "1.0.0",
+  "description": "taptap",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && gulp",
+    "start:dev": "npm run build && cd dist && node server.js",
+    "start:prod": "node server.js",
+    "deploy": "npm run build && cd dist && git init && git add . && git commit -m 'Update site.' && git push git@heroku.com:taptap-app.git master --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirbyk/taptap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirbyk/taptap/issues"
+  },
+  "homepage": "https://github.com/kirbyk/taptap#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "dotenv": "^2.0.0",
+    "express": "^4.13.4",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.4.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-bower": "0.0.13",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.2.0",
+    "node-normalize-scss": "^1.1.1"
+  }
+}
