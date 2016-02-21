@@ -58,6 +58,7 @@ gulp.task('scripts', function() {
   return gulp.src([
       config.bowerDir + '/jquery/dist/jquery.js',
       config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.min.js',
+      config.bowerDir + '/firebase/firebase.js',
       config.jsPath
     ])
     .pipe(concat('main.js'))
