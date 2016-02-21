@@ -2,8 +2,8 @@ var firebase = require('firebase');
 var Constants = require('../constants');
 
 
-var tapsRef = Constants.rootFirebaseRef;
-var currentApp = null;
+var firebaseRef = Constants.rootFirebaseRef;
+currentApp = null;
 
 
 exports.single = function(req, res) {
@@ -11,8 +11,7 @@ exports.single = function(req, res) {
 
   _sendFireRequest(req, res, {
     type: 'single',
-    user: 'test-user',
-    app: currentApp
+    user: 'test-user'
   });
 };
 
@@ -21,8 +20,7 @@ exports.double = function(req, res) {
 
   _sendFireRequest(req, res, {
     type: 'double',
-    user: 'test-user',
-    app: currentApp
+    user: 'test-user'
   });
 };
 
@@ -31,8 +29,7 @@ exports.hold = function(req, res) {
 
   _sendFireRequest(req, res, {
     type: 'hold',
-    user: 'test-user',
-    app: currentApp
+    user: 'test-user'
   });
 };
 
@@ -41,21 +38,21 @@ exports.any = function(req, res) {
 
   _sendFireRequest(req, res, {
     type: 'any',
-    user: 'test-user',
-    app: currentApp
+    user: 'test-user'
   });
 };
 
 function _sendFireRequest(req, res, payload) {
   _fireRequest({
     type: payload.type,
-    user: payload.user,
-    app: payload.app
+    user: payload.user
   }, function(err) {
     if (err) {
+      console.log(err);
       res.sendStatus(500);
     }
 
+    console.log('success');
     res.sendStatus(200);
   });
 }
@@ -64,14 +61,14 @@ function _sendFireRequest(req, res, payload) {
 function _fireRequest(payload, callback) {
   console.log('Firing ' + payload.type);
 
-  // var path = 'test-users/' + payload.user + '/taps/' + payload.type;
-  var path = 'test-users/' + 'test-user' + '/taps/' + payload.type;
+  // var path = 'users/' + 'test-user' + '/taps/' + payload.type;
+  var path = 'users/' + 'test-user' + '/taps';
   
-  tapsRef.child(path).push({
-
+  firebaseRef.child(path).push({
+    app: currentApp
   }, callback);
 }
 
-tapsRef.child('test-users/test-user/currentApp').on('value', function(fireCurrentApp) { // TODO: change this to correct endpoint
+firebaseRef.child('users/test-user/currentApp').on('value', function(fireCurrentApp) { // TODO: change this to correct endpoint
   currentApp = fireCurrentApp.val();
 });
